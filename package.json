@@ -31,17 +31,17 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-security": "^1.4.0",
     "mocha": "^7.1.1",
-    "prettier": "^2.0.2",
+    "prettier": "^2.0.4",
     "rimraf": "^3.0.2",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
-    "@foundriesio/log": "^1.0.1",
+    "@foundriesio/log": "^1.0.2",
+    "@foundriesio/request": "^1.0.2",
     "bluebird": "^3.7.2",
     "convict": "^5.2.0",
-    "jsonwebtoken": "^8.5.1",
-    "request-promise": "github:foundriesio/request-promise"
+    "jsonwebtoken": "^8.5.1"
   },
   "repository": {
     "type": "git",
