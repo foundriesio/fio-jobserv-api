@@ -110,7 +110,7 @@ RemoteSecrets.prototype.fromCache = async function (key) {
 
 RemoteSecrets.prototype.setCache = function (key, data, expires) {
   if (this.cache) {
-    setImmediate(this.cache.bind(this.cache), key, data, expires);
+    setImmediate(this.cache.seth.bind(this.cache), key, data, expires);
   }
 };
 
