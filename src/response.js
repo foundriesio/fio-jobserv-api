@@ -44,8 +44,14 @@ const remoteResponse = function (req) {
       return this.res.body;
     },
     get pagination() {
-      // TODO
-      return {};
+      const data = this.json();
+      return {
+        total: data.total,
+        limit: data.limit,
+        pages: data.pages,
+        current: data.page,
+        next: data.page + 1 > data.pages ? null : data.page + 1,
+      };
     },
   };
 
