@@ -20,7 +20,7 @@ class Projects extends JobServ {
  * @param {String} projectName
  * @param {Object} query
  */
-Projects.prototype.builds = async function ({ user, projectName, query }) {
+Projects.prototype.findBuilds = async function ({ user, projectName, query }) {
   return this.find({
     user: user,
     path: `${projectName}/builds/`,
@@ -35,7 +35,7 @@ Projects.prototype.builds = async function ({ user, projectName, query }) {
  * @param {String} build
  * @param {Object} query
  */
-Projects.prototype.build = async function ({
+Projects.prototype.findBuildById = async function ({
   user,
   projectName,
   build,
@@ -55,7 +55,12 @@ Projects.prototype.build = async function ({
  * @param {String} build
  * @param {Object} query
  */
-Projects.prototype.runs = async function ({ user, projectName, build, query }) {
+Projects.prototype.findRuns = async function ({
+  user,
+  projectName,
+  build,
+  query,
+}) {
   return this.find({
     user: user,
     path: `${projectName}/builds/${build}/runs/`,
@@ -71,7 +76,7 @@ Projects.prototype.runs = async function ({ user, projectName, build, query }) {
  * @param {String} runName
  * @param {Object} query
  */
-Projects.prototype.run = async function ({
+Projects.prototype.findRunByName = async function ({
   user,
   projectName,
   build,
@@ -93,7 +98,7 @@ Projects.prototype.run = async function ({
  * @param {String} runName
  * @param {Object} query
  */
-Projects.prototype.tests = async function ({
+Projects.prototype.findTests = async function ({
   user,
   projectName,
   build,
@@ -116,7 +121,7 @@ Projects.prototype.tests = async function ({
  * @param {String} testName
  * @param {Object} query
  */
-Projects.prototype.test = async function ({
+Projects.prototype.findTestByName = async function ({
   user,
   projectName,
   build,
