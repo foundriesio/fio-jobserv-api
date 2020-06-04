@@ -23,7 +23,7 @@ class Projects extends JobServ {
 Projects.prototype.findBuilds = async function ({ user, projectName, query }) {
   return this.find({
     user: user,
-    path: `${projectName}/builds/`,
+    path: `/projects/${projectName}/builds/`,
     query: query,
   });
 };
@@ -43,7 +43,7 @@ Projects.prototype.findBuildById = async function ({
 }) {
   return this.find({
     user: user,
-    path: `${projectName}/builds/${build}/`,
+    path: `/projects/${projectName}/builds/${build}/`,
     query: query,
   });
 };
@@ -63,7 +63,7 @@ Projects.prototype.findRuns = async function ({
 }) {
   return this.find({
     user: user,
-    path: `${projectName}/builds/${build}/runs/`,
+    path: `/projects/${projectName}/builds/${build}/runs/`,
     query: query,
   });
 };
@@ -85,7 +85,7 @@ Projects.prototype.findRunByName = async function ({
 }) {
   return this.find({
     user: user,
-    path: `${projectName}/builds/${build}/runs/${runName}/`,
+    path: `/projects/${projectName}/builds/${build}/runs/${runName}/`,
     query: query,
   });
 };
@@ -107,7 +107,7 @@ Projects.prototype.findTests = async function ({
 }) {
   return this.find({
     user: user,
-    path: `${projectName}/builds/${build}/runs/${runName}/tests/`,
+    path: `/projects/${projectName}/builds/${build}/runs/${runName}/tests/`,
     query: query,
   });
 };
@@ -131,7 +131,7 @@ Projects.prototype.findTestByName = async function ({
 }) {
   return this.find({
     user: user,
-    path: `${projectName}/builds/${build}/runs/${runName}/tests/${testName}/`,
+    path: `/projects/${projectName}/builds/${build}/runs/${runName}/tests/${testName}/`,
     query: query,
   });
 };
