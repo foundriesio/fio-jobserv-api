@@ -45,7 +45,7 @@ const remoteResponse = function (req) {
     },
     get pagination() {
       const payload = this.json();
-      const data = payload.data || payload;  // hack is necessary as 'builds' and 'devices' api's differ
+      const data = payload.data || payload; // hack is necessary as 'builds' and 'devices' api's differ
       return {
         total: data.total,
         limit: data.limit,
