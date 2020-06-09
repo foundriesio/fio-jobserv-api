@@ -14,4 +14,15 @@ class Factories extends JobServ {
   }
 }
 
+/**
+ * Retrieve a factory status.
+ * @param {Object} data
+ * @param {Object} data.user
+ * @param {string} data.factoryName
+ * @param {Object} data.query
+ */
+Factories.prototype.status = async function ({ user, factoryName, query }) {
+  return this.findById({ user, id: `${factoryName}/status/`, query });
+};
+
 export default Factories;
