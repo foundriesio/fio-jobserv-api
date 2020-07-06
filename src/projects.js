@@ -91,6 +91,26 @@ Projects.prototype.findRunByName = async function ({
 };
 
 /**
+ * Retrieve history for run of a project.
+ * @param {Object} user
+ * @param {String} projectName
+ * @param {String} runName
+ * @param {Object} query
+ */
+Projects.prototype.findRunHistory = async function ({
+  user,
+  projectName,
+  runName,
+  query,
+}) {
+  return this.find({
+    user: user,
+    path: `/projects/${projectName}/history/${runName}/`,
+    query: query,
+  });
+};
+
+/**
  * Retrieve all tests of a project build run.
  * @param {Object} user
  * @param {String} build
