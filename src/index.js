@@ -10,16 +10,20 @@ import createresponse from './response';
 import devices from './devices';
 import factories from './factories';
 import factoryresources from './factory-resources';
-import projects from './projects';
 import jobserv from './jobserv';
+import legacydevicegroups from './legacy-device-groups';
+import legacydevices from './legacy-devices';
+import projects from './projects';
 import remote from './remote';
 
 export const createResponse = createresponse;
 export const Devices = devices;
 export const Factories = factories;
 export const FactoryResources = factoryresources;
-export const Projects = projects;
 export const JobServ = jobserv;
+export const LegacyDeviceGroups = legacydevicegroups;
+export const LegacyDevices = legacydevices;
+export const Projects = projects;
 export const Remote = remote;
 
 export default JobServ;
