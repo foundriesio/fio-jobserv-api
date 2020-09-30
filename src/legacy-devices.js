@@ -41,11 +41,13 @@ LegacyDevices.prototype.findByName = async function ({
  * @param {Object} query
  */
 LegacyDevices.prototype.updates = async function ({ user, deviceName, query }) {
-  return this.find({
-    user,
-    path: `${this.path}/${deviceName}/updates/`,
-    query,
-  });
+  return createResponse(
+    this.get(
+      `${this.path}/${deviceName}/updates/`,
+      query,
+      await this.prepare(user)
+    )
+  );
 };
 
 LegacyDevices.prototype.requestUpdate = async function ({
