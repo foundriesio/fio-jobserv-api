@@ -123,14 +123,8 @@ Secrets.prototype.jwt = async function (data, uid) {
   return null;
 };
 
-let secrets;
-
 export function getSecrets(cache) {
-  if (!secrets) {
-    secrets = new Secrets(cache);
-  }
-
-  return secrets;
+  return new Secrets(cache);
 }
 
 export default getSecrets;
