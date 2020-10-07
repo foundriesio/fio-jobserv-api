@@ -50,7 +50,7 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
-    "@foundriesio/log": "^1.0.17",
+    "@foundriesio/log": "^1.0.18",
     "@foundriesio/request": "^1.0.7",
     "bluebird": "^3.7.2",
     "convict": "^6.0.0",
