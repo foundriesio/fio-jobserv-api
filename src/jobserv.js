@@ -26,7 +26,9 @@ export class JobServ extends Remote {
  * @returns {String} Serialized data as a string.
  */
 JobServ.prototype.serialize = function (data) {
-  return JSON.stringify(data);
+  if (data) {
+    return JSON.stringify(data);
+  }
 };
 
 /**
