@@ -6,11 +6,13 @@ you may not use this file except in compliance with the License.
 You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 */
 
+import createResponse from './response';
 import JobServ from './jobserv';
 
 class Projects extends JobServ {
   constructor(uri, cache) {
     super(uri, cache);
+    this.hasTrailingSlash = false;
   }
 }
 
@@ -88,6 +90,17 @@ Projects.prototype.findRunByName = async function ({
     path: `/projects/${projectName}/builds/${build}/runs/${runName}/`,
     query: query,
   });
+};
+
+Projects.prototype.cancelRun = async function ({ user, project, build, run }) {
+  return createResponse(
+    this.post(
+      null,
+      `/projects/${project}/builds/${build}/runs/${run}/cancel`,
+      null,
+      await this.prepare(user)
+    )
+  );
 };
 
 /**
