@@ -113,6 +113,47 @@ Projects.prototype.cancelRun = async function ({ user, project, build, run }) {
 };
 
 /**
+ * Run again a previously ran run.
+ * @param {Object} data
+ * @param {Object} data.user - The user performing the request.
+ * @param {String} data.project - The name of the project.
+ * @param {String} data.build - The build number.
+ * @param {String} data.run - The name of the run.
+ * @returns {Promise}
+ */
+Projects.prototype.runAgain = async function ({ user, project, build, run }) {
+  return createResponse(
+    this.post(
+      null,
+      `/projects/${project}/builds/${build}/runs/${run}/rerun`,
+      null,
+      await this.prepare(user)
+    )
+  );
+};
+
+/**
+ * Retrieve the .simulate.sh script for a run.
+ * @param {Object} data
+ * @param {Object} data.user - The user performing the request.
+ * @param {String} data.project - The name of the project.
+ * @param {String} data.build - The build number.
+ * @param {String} data.run - The name of the run.
+ * @returns {Promise}
+ */
+Projects.prototype.retrieveSimulator = async function ({
+  user,
+  project,
+  build,
+  run,
+}) {
+  return this.find({
+    user,
+    path: `/projects/${project}/builds/${build}/runs/${run}/.simulate.sh`,
+  });
+};
+
+/**
  * Retrieve history for run of a project.
  * @param {Object} user
  * @param {String} projectName
