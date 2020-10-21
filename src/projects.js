@@ -86,12 +86,21 @@ Projects.prototype.findRunByName = async function ({
   query,
 }) {
   return this.find({
-    user: user,
     path: `/projects/${projectName}/builds/${build}/runs/${runName}/`,
-    query: query,
+    user,
+    query,
   });
 };
 
+/**
+ * Stop/Cancel a running run.
+ * @param {Object} data
+ * @param {Object} data.user - The user performing the request.
+ * @param {String} data.project - The name of the project.
+ * @param {String} data.build - The build number.
+ * @param {String} data.run - The name of the run.
+ * @returns {Promise}
+ */
 Projects.prototype.cancelRun = async function ({ user, project, build, run }) {
   return createResponse(
     this.post(
