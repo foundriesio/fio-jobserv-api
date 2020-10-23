@@ -14,6 +14,7 @@ import jobserv from './jobserv';
 import legacydevicegroups from './legacy-device-groups';
 import legacydevices from './legacy-devices';
 import projects from './projects';
+import updates from './updates';
 import remote from './remote';
 
 export const createResponse = createresponse;
@@ -25,5 +26,6 @@ export const LegacyDeviceGroups = legacydevicegroups;
 export const LegacyDevices = legacydevices;
 export const Projects = projects;
 export const Remote = remote;
+export const Updates = updates;
 
 export default JobServ;
