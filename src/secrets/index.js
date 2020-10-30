@@ -84,11 +84,12 @@ Secrets.prototype.hmac = async function (data) {
 /**
  * Create a JWT token based on the provided data.
  *
- * @param {Object} data The data to create a JWT.
- * @param {String} uid The user ID.
+ * @param {Object} data - The data to create a JWT.
+ * @param {String} uid - The user ID.
+ * @param {Number} [expiresIn] - The token expiration in seconds.
  * @returns {Promise} A valid JWT token.
  */
-Secrets.prototype.jwt = async function (data, uid) {
+Secrets.prototype.jwt = async function (data, uid, expiresIn) {
   let secretKey;
 
   const jwtKey = `${this.secret}:${this.namespace}:${uid}:${toHash(data)}`;
@@ -107,7 +108,7 @@ Secrets.prototype.jwt = async function (data, uid) {
       secretKey = secrets[`${jwtPrevSecretKey}`];
     }
 
-    const exp = this.calculateExpiration(tokenExpiresIn);
+    const exp = this.calculateExpiration(expiresIn || tokenExpiresIn);
 
     const token = await jwt.signAsync(data, secretKey, {
       algorithm: 'HS256',
