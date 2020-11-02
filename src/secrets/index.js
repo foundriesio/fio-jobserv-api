@@ -87,16 +87,19 @@ Secrets.prototype.hmac = async function (data) {
  * @param {Object} data - The data to create a JWT.
  * @param {String} uid - The user ID.
  * @param {Number} [expiresIn] - The token expiration in seconds.
+ * @param {Boolean} [force=false] - If the JWT token should always be created new.
  * @returns {Promise} A valid JWT token.
  */
-Secrets.prototype.jwt = async function (data, uid, expiresIn) {
+Secrets.prototype.jwt = async function (data, uid, expiresIn, force = false) {
   let secretKey;
 
   const jwtKey = `${this.secret}:${this.namespace}:${uid}:${toHash(data)}`;
 
-  const cached = await this.fromCache(jwtKey);
-  if (cached) {
-    return cached.jwt;
+  if (!force) {
+    const cached = await this.fromCache(jwtKey);
+    if (cached) {
+      return cached.jwt;
+    }
   }
 
   const secrets = await this.retrieve(this.secret, this.namespace);
