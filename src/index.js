@@ -6,26 +6,49 @@ you may not use this file except in compliance with the License.
 You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 */
 
-import createresponse from './response';
-import devices from './devices';
-import factories from './factories';
-import factoryresources from './factory-resources';
-import jobserv from './jobserv';
-import legacydevicegroups from './legacy-device-groups';
-import legacydevices from './legacy-devices';
-import projects from './projects';
-import updates from './updates';
-import remote from './remote';
-
-export const createResponse = createresponse;
-export const Devices = devices;
-export const Factories = factories;
-export const FactoryResources = factoryresources;
-export const JobServ = jobserv;
-export const LegacyDeviceGroups = legacydevicegroups;
-export const LegacyDevices = legacydevices;
-export const Projects = projects;
-export const Remote = remote;
-export const Updates = updates;
+import Devices from './devices.js';
+import Factories from './factories.js';
+import FactoryResources from './factory-resources.js';
+import JobServ from './jobserv.js';
+import LegacyDeviceGroups from './legacy-device-groups.js';
+import LegacyDevices from './legacy-devices.js';
+import Projects from './projects.js';
+import Updates from './updates.js';
 
 export default JobServ;
+
+/**
+ * Generate the base API access resources.
+ * Available resources are:
+ *   Devices
+ *   Factories
+ *   LegacyDeviceGroups
+ *   LegacyDevices
+ *   Projects
+ *   Updates
+ * @param {String} address - The address of the resource server.
+ * @returns {Object}
+ */
+export const generateFioApiResources = (address) => {
+  return {
+    Devices: new Devices(address),
+    Factories: new Factories(address),
+    LegacyDeviceGroups: new LegacyDeviceGroups(address),
+    LegacyDevices: new LegacyDevices(address),
+    Projects: new Projects(address),
+    Updates: new Updates(address),
+  };
+};
+
+/**
+ * Generate the internal API access resources.
+ * Available resources are:
+ *   FactoryResources
+ * @param {String} address - The address of the resource server.
+ * @returns {Object}
+ */
+export const generateFioInternalApiResources = (address) => {
+  return {
+    FactoryResources: new FactoryResources(address),
+  };
+};
