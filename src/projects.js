@@ -6,216 +6,246 @@ you may not use this file except in compliance with the License.
 You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 */
 
-import createResponse from './response';
-import JobServ from './jobserv';
+import createResponse from './response.js';
+import JobServ from './jobserv.js';
 
 class Projects extends JobServ {
-  constructor(uri, cache) {
-    super(uri, cache);
-    this.hasTrailingSlash = false;
+  constructor(address) {
+    super(address);
+    this.basePath = '/projects/';
   }
 }
 
 /**
  * Retrieve all builds of a project.
- * @param {Object} user
- * @param {String} projectName
- * @param {Object} query
+ * @param {Object} data
+ * @param {String} data.project - The name of the project.
+ * @param {Object} [data.query] - The request query parameters.
+ * @param {Object} [data.options] - Optional request options.
+ * @returns {Promise<Object>}
  */
-Projects.prototype.findBuilds = async function ({ user, projectName, query }) {
+Projects.prototype.findBuilds = async function ({ project, query, options }) {
   return this.find({
-    user: user,
-    path: `/projects/${projectName}/builds/`,
-    query: query,
+    path: `${project}/builds/`,
+    query,
+    options,
   });
 };
 
 /**
  * Retrieve a project build.
- * @param {Object} user
- * @param {String} projectName
- * @param {String} build
- * @param {Object} query
+ * @param {Object} data
+ * @param {String} data.project - The project name.
+ * @param {String} data.build - The build name/id.
+ * @param {Object} [data.query] - The request query parameters.
+ * @param {Object} [data.options] - Optional request options.
+ * @returns {Promise<Object>}
  */
 Projects.prototype.findBuildById = async function ({
-  user,
-  projectName,
+  project,
   build,
   query,
+  options,
 }) {
   return this.find({
-    user: user,
-    path: `/projects/${projectName}/builds/${build}/`,
-    query: query,
+    path: `${project}/builds/${build}/`,
+    query,
+    options,
   });
 };
 
 /**
  * Retrieve all runs of a project build.
- * @param {Object} user
- * @param {String} projectName
- * @param {String} build
- * @param {Object} query
+ * @param {Object} data
+ * @param {String} data.project - The project name.
+ * @param {String} data.build - The build name/id.
+ * @param {Object} [data.query] - The request query parameters.
+ * @param {Object} [data.options] - Optional request options.
+ * @returns {Promise<Object>}
  */
 Projects.prototype.findRuns = async function ({
-  user,
-  projectName,
+  project,
   build,
   query,
+  options,
 }) {
   return this.find({
-    user: user,
-    path: `/projects/${projectName}/builds/${build}/runs/`,
-    query: query,
+    path: `${project}/builds/${build}/runs/`,
+    query,
+    options,
   });
 };
 
 /**
  * Retrieve a run of a project build.
- * @param {Object} user
- * @param {String} projectName
- * @param {String} build
- * @param {String} runName
- * @param {Object} query
+ * @param {Object} data
+ * @param {String} data.project - The project name.
+ * @param {String} data.build - The build name/id.
+ * @param {String} data.run - The run name/id.
+ * @param {Object} [data.query] - The request query parameters.
+ * @param {Object} [data.options] - Optional request options.
+ * @returns {Promise<Object>}
  */
 Projects.prototype.findRunByName = async function ({
-  user,
-  projectName,
+  project,
   build,
-  runName,
+  run,
   query,
+  options,
 }) {
   return this.find({
-    path: `/projects/${projectName}/builds/${build}/runs/${runName}/`,
-    user,
+    path: `${project}/builds/${build}/runs/${run}/`,
     query,
+    options,
   });
 };
 
 /**
  * Stop/Cancel a running run.
  * @param {Object} data
- * @param {Object} data.user - The user performing the request.
- * @param {String} data.project - The name of the project.
- * @param {String} data.build - The build number.
- * @param {String} data.run - The name of the run.
- * @returns {Promise}
+ * @param {String} data.project - The project name.
+ * @param {String} data.build - The build name/id.
+ * @param {String} data.run - The run name/id.
+ * @param {Object} [data.query] - The request query parameters.
+ * @param {Object} [data.options] - Optional request options.
+ * @returns {Promise<Object>}
  */
-Projects.prototype.cancelRun = async function ({ user, project, build, run }) {
+Projects.prototype.cancelRun = async function ({
+  project,
+  build,
+  run,
+  query,
+  options,
+}) {
   return createResponse(
-    this.post(
-      null,
-      `/projects/${project}/builds/${build}/runs/${run}/cancel`,
-      null,
-      await this.prepare(user)
-    )
+    this.post({
+      path: `${project}/builds/${build}/runs/${run}/cancel`,
+      query,
+      options,
+    })
   );
 };
 
 /**
  * Run again a previously ran run.
  * @param {Object} data
- * @param {Object} data.user - The user performing the request.
- * @param {String} data.project - The name of the project.
- * @param {String} data.build - The build number.
- * @param {String} data.run - The name of the run.
- * @returns {Promise}
+ * @param {String} data.project - The project name.
+ * @param {String} data.build - The build name/id.
+ * @param {String} data.run - The run name/id.
+ * @param {Object} [data.query] - The request query parameters.
+ * @param {Object} [data.options] - Optional request options.
+ * @returns {Promise<Object>}
  */
-Projects.prototype.runAgain = async function ({ user, project, build, run }) {
+Projects.prototype.runAgain = async function ({
+  project,
+  build,
+  run,
+  query,
+  options,
+}) {
   return createResponse(
-    this.post(
-      null,
-      `/projects/${project}/builds/${build}/runs/${run}/rerun`,
-      null,
-      await this.prepare(user)
-    )
+    this.post({
+      path: `${project}/builds/${build}/runs/${run}/rerun`,
+      query,
+      options,
+    })
   );
 };
 
 /**
  * Retrieve the .simulate.sh script for a run.
  * @param {Object} data
- * @param {Object} data.user - The user performing the request.
- * @param {String} data.project - The name of the project.
- * @param {String} data.build - The build number.
- * @param {String} data.run - The name of the run.
- * @returns {Promise}
+ * @param {String} data.project - The project name.
+ * @param {String} data.build - The build name/id.
+ * @param {String} data.run - The run name/id.
+ * @param {Object} [data.query] - The request query parameters.
+ * @param {Object} [data.options] - Optional request options.
+ * @returns {Promise<Object>}
  */
 Projects.prototype.retrieveSimulator = async function ({
-  user,
   project,
   build,
   run,
+  query,
+  options,
 }) {
   return this.find({
-    user,
-    path: `/projects/${project}/builds/${build}/runs/${run}/.simulate.sh`,
+    path: `${project}/builds/${build}/runs/${run}/.simulate.sh`,
+    query,
+    options,
   });
 };
 
 /**
  * Retrieve history for run of a project.
- * @param {Object} user
- * @param {String} projectName
- * @param {String} runName
- * @param {Object} query
+ * @param {Object} data
+ * @param {String} data.project - The project name.
+ * @param {String} data.build - The build name/id.
+ * @param {String} data.run - The run name/id.
+ * @param {Object} [data.query] - The request query parameters.
+ * @param {Object} [data.options] - Optional request options.
+ * @returns {Promise<Object>}
  */
 Projects.prototype.findRunHistory = async function ({
-  user,
-  projectName,
-  runName,
+  project,
+  run,
   query,
+  options,
 }) {
   return this.find({
-    user: user,
-    path: `/projects/${projectName}/history/${runName}/`,
-    query: query,
+    path: `${project}/history/${run}/`,
+    query,
+    options,
   });
 };
 
 /**
  * Retrieve all tests of a project build run.
- * @param {Object} user
- * @param {String} build
- * @param {String} projectName
- * @param {String} runName
- * @param {Object} query
+ * @param {Object} data
+ * @param {String} data.project - The project name.
+ * @param {String} data.build - The build name/id.
+ * @param {String} data.run - The run name/id.
+ * @param {Object} [data.query] - The request query parameters.
+ * @param {Object} [data.options] - Optional request options.
+ * @returns {Promise<Object>}
  */
 Projects.prototype.findTests = async function ({
-  user,
-  projectName,
+  project,
   build,
-  runName,
+  run,
   query,
+  options,
 }) {
   return this.find({
-    user: user,
-    path: `/projects/${projectName}/builds/${build}/runs/${runName}/tests/`,
-    query: query,
+    path: `${project}/builds/${build}/runs/${run}/tests/`,
+    query,
+    options,
   });
 };
 
 /**
  * Retrieve all tests of a project build run.
- * @param {Object} user
- * @param {String} build
- * @param {String} projectName
- * @param {String} runName
- * @param {String} testName
- * @param {Object} query
+ * @param {Object} data
+ * @param {String} data.project - The project name.
+ * @param {String} data.build - The build name/id.
+ * @param {String} data.run - The run name/id.
+ * @param {String} data.test - The test name/id.
+ * @param {Object} [data.query] - The request query parameters.
+ * @param {Object} [data.options] - Optional request options.
+ * @returns {Promise<Object>}
  */
 Projects.prototype.findTestByName = async function ({
-  user,
-  projectName,
+  project,
   build,
-  runName,
-  testName,
+  run,
+  test,
   query,
+  options,
 }) {
   return this.find({
-    user: user,
-    path: `/projects/${projectName}/builds/${build}/runs/${runName}/tests/${testName}/`,
-    query: query,
+    path: `/projects/${project}/builds/${build}/runs/${run}/tests/${test}/`,
+    query,
+    options,
   });
 };
 
