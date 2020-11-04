@@ -6,32 +6,32 @@ you may not use this file except in compliance with the License.
 You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 */
 
-import createResponse from './response';
-import JobServ from './jobserv';
+import createResponse from './response.js';
+import JobServ from './jobserv.js';
 
 class LegacyDevices extends JobServ {
-  constructor(uri, cache) {
-    super(uri, cache);
-    this.path = '/lmp/devices';
+  constructor(address) {
+    super(address);
+    this.basePath = '/lmp/devices/';
   }
 }
 
 /**
  * Find all devices.
  */
-LegacyDevices.prototype.find = async function ({ user, query }) {
-  return createResponse(this.get(this.path, query, await this.prepare(user)));
+LegacyDevices.prototype.find = async function ({ query, options }) {
+  return createResponse(this.get({ query, options }));
 };
 
 /**
  * Find a device by its name.
  */
 LegacyDevices.prototype.findByName = async function ({
-  user,
-  deviceName,
+  device,
   query,
+  options,
 }) {
-  return this.findById({ user, id: `${this.path}/${deviceName}`, query });
+  return createResponse(this.get({ path: `${device}/`, query, options }));
 };
 
 /**
@@ -40,55 +40,42 @@ LegacyDevices.prototype.findByName = async function ({
  * @param {String} deviceName
  * @param {Object} query
  */
-LegacyDevices.prototype.updates = async function ({ user, deviceName, query }) {
+LegacyDevices.prototype.updates = async function ({ device, query, options }) {
   return createResponse(
-    this.get(
-      `${this.path}/${deviceName}/updates/`,
-      query,
-      await this.prepare(user)
-    )
+    this.get({ path: `${device}/updates/`, query, options })
   );
 };
 
 LegacyDevices.prototype.requestUpdate = async function ({
-  user,
-  deviceName,
+  device,
   stream,
   hash,
+  options,
 }) {
   return createResponse(
-    this.put(
-      { image: { hash } },
-      `${this.path}/${deviceName}`,
-      { stream },
-      await this.prepare(user, true)
-    )
+    this.put({
+      path: `/${device}`,
+      body: { image: { hash } },
+      query: { stream },
+      options,
+    })
   );
 };
 
-LegacyDevices.prototype.remove = async function ({ user, deviceName, stream }) {
+LegacyDevices.prototype.remove = async function ({ device, stream, options }) {
   return createResponse(
-    this.delete(
-      `${this.path}/${deviceName}`,
-      { stream },
-      await this.prepare(user)
-    )
+    this.delete({ path: `${device}/`, query: { stream }, options })
   );
 };
 
 LegacyDevices.prototype.update = async function ({
-  user,
-  deviceName,
+  device,
   stream,
-  data,
+  body,
+  options,
 }) {
   return createResponse(
-    this.patch(
-      data,
-      `${this.path}/${deviceName}`,
-      { stream },
-      await this.prepare(user, true)
-    )
+    this.patch({ path: `${device}/`, body, query: { stream }, options })
   );
 };
 
