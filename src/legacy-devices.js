@@ -54,7 +54,7 @@ LegacyDevices.prototype.requestUpdate = async function ({
 }) {
   return createResponse(
     this.put({
-      path: `/${device}`,
+      path: `${device}/`,
       body: { image: { hash } },
       query: { stream },
       options,
