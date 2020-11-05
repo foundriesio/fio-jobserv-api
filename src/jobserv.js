@@ -57,8 +57,8 @@ JobServ.prototype.findById = async function ({ id, query, options }) {
  *
  * @param {Object} data
  * @param {String} [data.path] - The path of the request.
- * @param {(String|Buffer)} data.data - The data to send (aliased as body).
- * @param {(String|Buffer)} [data.body] - The data to send.
+ * @param {(Object|String|Buffer)} data.data - The data to send (aliased as body). If an object, it will be serialized as json.
+ * @param {(Object|String|Buffer)} [data.body] - The data to send.
  * @param {Object} [data.query] - The query parameters.
  * @param {Object} [data.options] - Optional request configurations.
  * @returns {Promise<Object>}
@@ -80,8 +80,8 @@ JobServ.prototype.create = async function ({
  *
  * @param {Object} data
  * @param {String} [data.path] - The path of the request.
- * @param {(String|Buffer)} data.data - The data to send (aliased as body).
- * @param {(String|Buffer)} [data.body] - The data to send.
+ * @param {(Object|String|Buffer)} data.data - The data to send (aliased as body). If an object, it will be serialized as json.
+ * @param {(Object|String|Buffer)} [data.body] - The data to send.
  * @param {Object} [data.query] - The query parameters.
  * @param {Object} [data.options] - Optional request configurations.
  * @returns {Promise<Object>}

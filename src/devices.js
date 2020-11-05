@@ -44,8 +44,8 @@ Devices.prototype.remove = async function ({ device, query, options }) {
  * Update a device name.
  * @param {Object} data
  * @param {String} data.device - The name of the device.
- * @param {(String|Buffer)} data.data - The data to send (aliased as body).
- * @param {(String|Buffer)} [data.body] - The data to send.
+ * @param {(Object|String|Buffer)} data.data - The data to send (aliased as body). If an object, it will be serialized as json.
+ * @param {(Object|String|Buffer)} [data.body] - The data to send.
  * @param {Object} [data.query] - The request query parameters.
  * @param {Object} [data.options] - Optional request options.
  * @returns {Promise<Object>}
@@ -163,8 +163,8 @@ Devices.prototype.getConfig = async function ({ device, query, options }) {
  * Update the device configuration with new content.
  * @param {Object} data
  * @param {String} data.device - The name of the device.
- * @param {(String|Buffer)} data.data - The data to send.
- * @param {(String|Buffer)} [data.body] - The data to send (aliased as body).
+ * @param {(Object|String|Buffer)} data.data - The data to send (aliased as body). If an object, it will be serialized as json.
+ * @param {(Object|String|Buffer)} [data.body] - The data to send.
  * @param {Object} [data.query] - The request query parameters.
  * @param {Object} [data.options] - Optional request options.
  * @returns {Promise<Object>}

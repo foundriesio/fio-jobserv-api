@@ -67,6 +67,24 @@ Remote.prototype.createPath = function (path, query) {
 };
 
 /**
+ * Serialize the data as JSON.
+ * If the data is String or Buffer, it will be returned as is.
+ * @param {Object} body - The data to serialize.
+ * @return {Buffer|String}
+ */
+Remote.prototype.serialize = function (body) {
+  if (!body) {
+    return;
+  }
+
+  if (typeof body === 'string' || Buffer.isBuffer(body)) {
+    return body;
+  }
+
+  return Buffer.from(JSON.stringify(body));
+};
+
+/**
  * Perform the fetch request.
  * @param {Object} data
  * @param {String} [data.path] - The path of the request.
@@ -85,7 +103,7 @@ Remote.prototype.fetch = async function ({
 }) {
   return fetch(this.createPath(path, query), {
     method,
-    body,
+    body: this.serialize(body),
     ...DEFAULT_FETCH_OPTIONS,
     ...options,
   });
