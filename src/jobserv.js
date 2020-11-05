@@ -57,13 +57,22 @@ JobServ.prototype.findById = async function ({ id, query, options }) {
  *
  * @param {Object} data
  * @param {String} [data.path] - The path of the request.
- * @param {String|Buffer} data.body - The data to send.
+ * @param {(String|Buffer)} data.data - The data to send (aliased as body).
+ * @param {(String|Buffer)} [data.body] - The data to send.
  * @param {Object} [data.query] - The query parameters.
  * @param {Object} [data.options] - Optional request configurations.
  * @returns {Promise<Object>}
  */
-JobServ.prototype.create = async function ({ path, body, query, options }) {
-  return createResponse(this.post({ path, body, query, options }));
+JobServ.prototype.create = async function ({
+  path,
+  body,
+  data,
+  query,
+  options,
+}) {
+  return createResponse(
+    this.post({ path, body: data || body, query, options })
+  );
 };
 
 /**
@@ -71,13 +80,22 @@ JobServ.prototype.create = async function ({ path, body, query, options }) {
  *
  * @param {Object} data
  * @param {String} [data.path] - The path of the request.
- * @param {String|Buffer} data.body - The data to send.
+ * @param {(String|Buffer)} data.data - The data to send (aliased as body).
+ * @param {(String|Buffer)} [data.body] - The data to send.
  * @param {Object} [data.query] - The query parameters.
  * @param {Object} [data.options] - Optional request configurations.
  * @returns {Promise<Object>}
  */
-JobServ.prototype.update = async function ({ path, body, query, options }) {
-  return createResponse(this.patch({ path, body, query, options }));
+JobServ.prototype.update = async function ({
+  path,
+  data,
+  body,
+  query,
+  options,
+}) {
+  return createResponse(
+    this.patch({ path, body: data || body, query, options })
+  );
 };
 
 /**

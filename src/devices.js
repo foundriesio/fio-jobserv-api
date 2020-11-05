@@ -44,16 +44,23 @@ Devices.prototype.remove = async function ({ device, query, options }) {
  * Update a device name.
  * @param {Object} data
  * @param {String} data.device - The name of the device.
- * @param {String|Buffer} data.body - The data to send.
+ * @param {(String|Buffer)} data.data - The data to send (aliased as body).
+ * @param {(String|Buffer)} [data.body] - The data to send.
  * @param {Object} [data.query] - The request query parameters.
  * @param {Object} [data.options] - Optional request options.
  * @returns {Promise<Object>}
  */
-Devices.prototype.update = async function ({ device, body, query, options }) {
+Devices.prototype.update = async function ({
+  device,
+  data,
+  body,
+  query,
+  options,
+}) {
   return createResponse(
     this.patch({
       path: `${device}/updates/`,
-      body,
+      body: data || body,
       query,
       options,
     })
@@ -156,13 +163,15 @@ Devices.prototype.getConfig = async function ({ device, query, options }) {
  * Update the device configuration with new content.
  * @param {Object} data
  * @param {String} data.device - The name of the device.
- * @param {String|Buffer} data.body - The data to send.
+ * @param {(String|Buffer)} data.data - The data to send.
+ * @param {(String|Buffer)} [data.body] - The data to send (aliased as body).
  * @param {Object} [data.query] - The request query parameters.
  * @param {Object} [data.options] - Optional request options.
  * @returns {Promise<Object>}
  */
 Devices.prototype.updateConfig = async function ({
   device,
+  data,
   body,
   query,
   options,
@@ -170,7 +179,7 @@ Devices.prototype.updateConfig = async function ({
   return createResponse(
     this.patch({
       path: `${device}/config/`,
-      body,
+      body: data || body,
       query,
       options,
     })

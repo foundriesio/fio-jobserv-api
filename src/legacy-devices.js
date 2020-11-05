@@ -68,14 +68,30 @@ LegacyDevices.prototype.remove = async function ({ device, stream, options }) {
   );
 };
 
+/**
+ * Update a device.
+ * @param {Object} data
+ * @param {String} data.device - The device name.
+ * @param {String} data.stream - The stream name.
+ * @param {(String|Buffer)} data.data - The data to send (aliased as body).
+ * @param {(String|Buffer)} [data.body] - The data to send.
+ * @param {Object} [data.options] - Optional request options.
+ * @returns {Promise<Object>}
+ */
 LegacyDevices.prototype.update = async function ({
   device,
   stream,
+  data,
   body,
   options,
 }) {
   return createResponse(
-    this.patch({ path: `${device}/`, body, query: { stream }, options })
+    this.patch({
+      path: `${device}/`,
+      body: data || body,
+      query: { stream },
+      options,
+    })
   );
 };
 
