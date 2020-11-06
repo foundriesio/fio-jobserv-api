@@ -50,7 +50,7 @@
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
-    "@foundriesio/log": "^1.0.19",
+    "@foundriesio/log": "^1.1.0",
     "node-fetch": "^2.6.1"
   },
   "repository": {
