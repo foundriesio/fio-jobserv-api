@@ -8,7 +8,19 @@ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2
 
 import JobServ from './jobserv.js';
 
-class Targets extends JobServ {
+/**
+ * Create the correct target name to be retrieved.
+ * Right now it's `[target]-lmp-[build]`.
+ * @param {Object} data
+ * @param {Object} data.run - The run name.
+ * @param {Object} data.target - The build name/id (the target).
+ * @returns {String}
+ */
+function createTargetName(run, target) {
+  return `${run}-lmp-${target}`;
+}
+
+class ComposeApps extends JobServ {
   constructor(address) {
     super(address);
     this.basePath = '/ota/factories/';
@@ -16,16 +28,66 @@ class Targets extends JobServ {
 }
 
 /**
- * Create the correct target name to be retrieved.
- * Right now it's `[target]-lmp-[build]`.
+ * List all compose apps for a target.
  * @param {Object} data
- * @param {Object} data.target - The target name.
- * @param {Object} data.build - The build name/id.
- * @returns {String}
+ * @param {String} data.factory - The name of the factory.
+ * @param {String} data.target - The name/id name of the build.
+ * @param {String} data.run - The run name.
+ * @param {Object} [data.query] - The request query parameters.
+ * @param {Object} [data.options] - Optional request options.
+ * @returns {Promise<Object>}
  */
-Targets.prototype.createTargetName = function ({ target, build }) {
-  return `${target}-lmp-${build}`;
+ComposeApps.prototype.list = async function ({
+  factory,
+  target,
+  run,
+  query,
+  options,
+}) {
+  return this.find({
+    path: `${factory}/targets/${createTargetName(run, target)}/compose-apps/`,
+    query,
+    options,
+  });
 };
+
+/**
+ * Retrieve a compose app details.
+ * @param {Object} data
+ * @param {String} data.factory - The name of the factory.
+ * @param {String} data.target - The name/id of the build.
+ * @param {String} data.run - The run name.
+ * @param {String} data.app - The name of the app.
+ * @param {Object} [data.query] - The request query parameters.
+ * @param {Object} [data.options] - Optional request options.
+ * @returns {Promise<Object>}
+ */
+ComposeApps.prototype.retrieve = async function ({
+  factory,
+  target,
+  run,
+  app,
+  query,
+  options,
+}) {
+  return this.find({
+    path: `${factory}/targets/${createTargetName(
+      run,
+      target
+    )}/compose-apps/${app}/`,
+    query,
+    options,
+  });
+};
+
+class Targets extends JobServ {
+  constructor(address) {
+    super(address);
+    this.basePath = '/ota/factories/';
+
+    this.ComposeApps = new ComposeApps(address);
+  }
+}
 
 /**
  * List all targets of a factory.
@@ -43,8 +105,8 @@ Targets.prototype.list = async function ({ factory, query, options }) {
  * Get a target of a factory.
  * @param {Object} data
  * @param {String} data.factory - The name of the factory.
- * @param {String} data.target - The name of the target.
- * @param {String} data.build - The name/id of the build.
+ * @param {String} data.target - The name/id of the build.
+ * @param {String} data.run - The run name.
  * @param {Object} [data.query] - The request query parameters.
  * @param {Object} [data.options] - Optional request options.
  * @returns {Promise<Object>}
@@ -52,12 +114,12 @@ Targets.prototype.list = async function ({ factory, query, options }) {
 Targets.prototype.retrieve = async function ({
   factory,
   target,
-  build,
+  run,
   query,
   options,
 }) {
   return this.find({
-    path: `${factory}/targets/${this.createTargetName({ target, build })}/`,
+    path: `${factory}/targets/${createTargetName(run, target)}/`,
     query,
     options,
   });
