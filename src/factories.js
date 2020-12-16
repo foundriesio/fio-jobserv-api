@@ -17,6 +17,9 @@ import JobServ from './jobserv.js';
  * @returns {String}
  */
 function createTargetName(run, target) {
+  if (run.indexOf(`lmp-${target}`) !== -1) {
+    return run;
+  }
   return `${run}-lmp-${target}`;
 }
 
