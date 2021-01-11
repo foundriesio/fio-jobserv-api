@@ -59,7 +59,7 @@ Devices.prototype.update = async function ({
 }) {
   return createResponse(
     this.patch({
-      path: `${device}/updates/`,
+      path: `${device}/`,
       body: data || body,
       query,
       options,
