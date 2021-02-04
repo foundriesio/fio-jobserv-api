@@ -147,13 +147,20 @@ Devices.prototype.createConfig = async function ({ device, query, options }) {
  * Retrieve the list of config settings defined for a device.
  * @param {Object} data
  * @param {String} data.device - The name of the device.
+ * @param {String} data.factory - The name of the factory.
  * @param {Object} [data.query] - The request query parameters.
  * @param {Object} [data.options] - Optional request options.
  * @returns {Promise<Object>}
  */
-Devices.prototype.getConfig = async function ({ device, query, options }) {
+Devices.prototype.getConfig = async function ({
+  device,
+  factory,
+  query,
+  options,
+}) {
   return this.find({
     path: `${device}/config/`,
+    factory,
     query,
     options,
   });
