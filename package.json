@@ -4,11 +4,11 @@
   "private": false,
   "description": "JobServ API for nodejs",
   "type": "module",
-  "main": "dist/main.js",
-  "module": "src/index.js",
+  "main": "./dist/main.cjs",
+  "module": "./src/index.js",
   "exports": {
     ".": {
-      "require": "./dist/main.js",
+      "require": "./dist/main.cjs",
       "default": "./src/index.js"
     }
   },
@@ -18,7 +18,7 @@
   "files": [
     "LICENSE.md",
     "package-lock.json",
-    "dist/*.js",
+    "dist",
     "src"
   ],
   "scripts": {
