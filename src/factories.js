@@ -7,6 +7,7 @@ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2
 */
 
 import JobServ from './jobserv.js';
+import createResponse from './response.js';
 
 /**
  * Create the correct target name to be retrieved.
@@ -22,6 +23,105 @@ function createTargetName(run, target) {
   }
   return `${run}-lmp-${target}`;
 }
+
+class DeviceGroups extends JobServ {
+  constructor(address) {
+    super(address);
+    this.basePath = '/ota/factories/';
+  }
+}
+
+/**
+ * List all device groups for a factory.
+ * @param {Object} data
+ * @param {String} data.factory - The name of the factory.
+ * @param {Object} [data.query] - The request query parameters.
+ * @param {Object} [data.options] - Optional request options.
+ * @returns {Promise<Array>}
+ */
+DeviceGroups.prototype.list = async function ({ factory, query, options }) {
+  return this.find({
+    path: `${factory}/device-groups/`,
+    query,
+    options,
+  });
+};
+
+/**
+ * Create a new device group.
+ * @param {Object} data
+ * @param {String} data.factory - The name of the factory.
+ * @param {Object} data.data - The data to send.
+ * @param {Object} [data.query] - The request query parameters.
+ * @param {Object} [data.options] - Optional request options.
+ * @returns {Promise<Object>}
+ */
+DeviceGroups.prototype.create = async function ({
+  factory,
+  data,
+  query,
+  options,
+}) {
+  return createResponse(
+    this.post({
+      path: `${factory}/device-groups/`,
+      body: data,
+      query,
+      options,
+    })
+  );
+};
+
+/**
+ * Update a device group.
+ * @param {Object} data
+ * @param {String} data.factory - The name of the factory.
+ * @param {String} data.group - The name of the device group.
+ * @param {Object} data.data - The data to send.
+ * @param {Object} [data.query] - The request query parameters.
+ * @param {Object} [data.options] - Optional request options.
+ * @returns {Promise<Object>}
+ */
+DeviceGroups.prototype.update = async function ({
+  factory,
+  group,
+  data,
+  query,
+  options,
+}) {
+  return createResponse(
+    this.patch({
+      path: `${factory}/device-groups/${group}/`,
+      body: data,
+      query,
+      options,
+    })
+  );
+};
+
+/**
+ * Remove a device group from a factory.
+ * @param {Object} data
+ * @param {String} data.factory - The name of the factory.
+ * @param {String} data.group - The name of the device group.
+ * @param {Object} [data.query] - The request query parameters.
+ * @param {Object} [data.options] - Optional request options.
+ * @returns {Promise}
+ */
+DeviceGroups.prototype.remove = async function ({
+  factory,
+  group,
+  query,
+  options,
+}) {
+  return createResponse(
+    this.delete({
+      path: `${factory}/device-groups/${group}/`,
+      query,
+      options,
+    })
+  );
+};
 
 class ComposeApps extends JobServ {
   constructor(address) {
@@ -134,6 +234,7 @@ class Factories extends JobServ {
     this.basePath = '/ota/factories/';
 
     this.Targets = new Targets(address);
+    this.DeviceGroups = new DeviceGroups(address);
   }
 }
 
