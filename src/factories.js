@@ -24,6 +24,129 @@ function createTargetName(run, target) {
   return `${run}-lmp-${target}`;
 }
 
+class Waves extends JobServ {
+  constructor(address) {
+    super(address);
+    this.basePath = '/ota/factories/';
+    this.resourcePath = 'waves';
+  }
+}
+
+/**
+ * List all waves for a factory.
+ * @param {Object} data
+ * @param {String} data.factory - The name of the factory.
+ * @param {Object} [data.query] - The request query parameters.
+ * @param {Object} [data.options] - Optional request options.
+ * @returns {Promise<Array>}
+ */
+Waves.prototype.list = async function ({ factory, query, options }) {
+  return this.find({
+    path: `${factory}/${this.resourcePath}/`,
+    query,
+    options,
+  });
+};
+
+/**
+ * Retrieve a single wave.
+ * @param {Object} args
+ * @param {String} args.factory - The name of the factory.
+ * @param {String} args.wave - The name of the wave.
+ * @param {Object} [args.query] - The request query parameters.
+ * @param {Object} [args.options] - Optional request options.
+ * @returns {Promise<Object>}
+ */
+Waves.prototype.retrieve = async function ({ factory, wave, query, options }) {
+  return this.find({
+    path: `${factory}/${this.resourcePath}/${wave}/`,
+    query,
+    options,
+  });
+};
+
+/**
+ * Retrieve a wave status.
+ * @param {Object} args
+ * @param {String} args.factory - The name of the factory.
+ * @param {String} args.wave - The name of the wave.
+ * @param {Object} [args.query] - The request query parameters.
+ * @param {Object} [args.options] - Optional request options.
+ * @returns {Promise<Object>}
+ */
+Waves.prototype.status = async function ({ factory, wave, query, options }) {
+  return this.find({
+    path: `${factory}/${this.resourcePath}/${wave}/status/`,
+    query,
+    options,
+  });
+};
+
+/**
+ * Retrieve a wave status.
+ * @param {Object} args
+ * @param {String} args.factory - The name of the factory.
+ * @param {String} args.wave - The name of the wave.
+ * @param {Object} [args.query] - The request query parameters.
+ * @param {Object} [args.options] - Optional request options.
+ * @returns {Promise<Object>}
+ */
+Waves.prototype.cancel = async function ({ factory, wave, query, options }) {
+  return createResponse(
+    this.post({
+      path: `${factory}/${this.resourcePath}/${wave}/cancel/`,
+      query,
+      options,
+    })
+  );
+};
+
+/**
+ * Retrieve a wave status.
+ * @param {Object} args
+ * @param {String} args.factory - The name of the factory.
+ * @param {String} args.wave - The name of the wave.
+ * @param {Object} [args.query] - The request query parameters.
+ * @param {Object} [args.options] - Optional request options.
+ * @returns {Promise<Object>}
+ */
+Waves.prototype.complete = async function ({ factory, wave, query, options }) {
+  return createResponse(
+    this.post({
+      path: `${factory}/${this.resourcePath}/${wave}/complete/`,
+      query,
+      options,
+    })
+  );
+};
+
+/**
+ * Retrieve a wave status.
+ * @param {Object} args
+ * @param {String} args.factory - The name of the factory.
+ * @param {String} args.wave - The name of the wave.
+ * @param {String} args.data - The data to send.
+ * @param {Object} [args.query] - The request query parameters.
+ * @param {Object} [args.options] - Optional request options.
+ * @returns {Promise<Object>}
+ */
+Waves.prototype.rollout = async function ({
+  factory,
+  wave,
+  data,
+  query,
+  options,
+}) {
+  return createResponse(
+    this.post({
+      path: `${factory}/${this.resourcePath}/${wave}/rollout/`,
+      body: data,
+      query,
+      options,
+    })
+  );
+};
+
 class DeviceGroups extends JobServ {
   constructor(address) {
     super(address);
@@ -235,6 +358,7 @@ class Factories extends JobServ {
 
     this.Targets = new Targets(address);
     this.DeviceGroups = new DeviceGroups(address);
+    this.Waves = new Waves(address);
   }
 }
 
