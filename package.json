@@ -43,7 +43,7 @@
   "author": "Milo Casagrande <milo@foundries.io>",
   "license": "Apache-2.0",
   "devDependencies": {
-    "dotenv": "^9.0.0",
+    "dotenv": "^9.0.1",
     "eslint": "^7.26.0",
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-security": "^1.4.0",
