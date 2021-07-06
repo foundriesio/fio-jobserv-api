@@ -6,6 +6,8 @@ you may not use this file except in compliance with the License.
 You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 */
 
+import safeRegex from 'safe-regex';
+
 import JobServ from './jobserv.js';
 import createResponse from './response.js';
 
@@ -18,7 +20,13 @@ import createResponse from './response.js';
  * @returns {String}
  */
 function createTargetName(run, target) {
-  if (/lmp-([a-zA-Z0-9-])*?\d+$/.test(run) && run.endsWith(target)) {
+  // eslint-disable-next-line security/detect-non-literal-regexp
+  const targetCheck = new RegExp(`(${target})`, 'i');
+  if (
+    /lmp-([a-zA-Z0-9-])*?\d+$/.test(run) &&
+    safeRegex(targetCheck) &&
+    targetCheck.test(run)
+  ) {
     return run;
   }
   return `${run}-lmp-${target}`;
