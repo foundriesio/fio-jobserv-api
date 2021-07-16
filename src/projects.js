@@ -243,7 +243,7 @@ Projects.prototype.findTestByName = async function ({
   options,
 }) {
   return this.find({
-    path: `/projects/${project}/builds/${build}/runs/${run}/tests/${test}/`,
+    path: `${project}/builds/${build}/runs/${run}/tests/${test}/`,
     query,
     options,
   });
